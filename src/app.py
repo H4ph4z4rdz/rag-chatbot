@@ -76,17 +76,21 @@ def respond(message: str, chat_history: list):
     """Handle a chat message with streaming."""
     chat_history = chat_history or []
 
+    # Add user message
+    chat_history.append({"role": "user", "content": message})
+    # Add empty assistant message to stream into
+    chat_history.append({"role": "assistant", "content": ""})
+
     # Stream the response
-    chat_history.append([message, ""])
     for partial_response, sources in chat_engine.stream_chat(message):
-        chat_history[-1][1] = partial_response
+        chat_history[-1]["content"] = partial_response
         yield "", chat_history
 
     # Append source info
     if sources:
         source_names = set(s["metadata"].get("source", "?") for s in sources)
         source_text = f"\n\n📚 *Sources: {', '.join(source_names)}*"
-        chat_history[-1][1] += source_text
+        chat_history[-1]["content"] += source_text
         yield "", chat_history
 
 
@@ -149,7 +153,6 @@ def get_status():
 # Build the Gradio UI
 with gr.Blocks(
     title="RAG Chatbot",
-    theme=gr.themes.Soft(primary_hue="indigo"),
 ) as demo:
 
     gr.Markdown(
@@ -194,7 +197,6 @@ with gr.Blocks(
             chatbot = gr.Chatbot(
                 label="Chat",
                 height=500,
-                show_copy_button=True,
             )
 
             with gr.Row():
@@ -240,4 +242,5 @@ if __name__ == "__main__":
         server_name="0.0.0.0",
         server_port=config["ui"]["port"],
         share=False,
+        theme=gr.themes.Soft(primary_hue="indigo"),
     )
