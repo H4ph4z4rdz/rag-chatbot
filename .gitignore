@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+
+# Vector store (large, regenerated from documents)
+vectorstore/*
+!vectorstore/.gitkeep
+
+# Documents (user's private files)
+documents/*
+!documents/.gitkeep
+!documents/example.txt
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env

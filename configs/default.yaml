@@ -1,0 +1,34 @@
+# RAG Chatbot Configuration
+
+# Ollama LLM settings
+llm:
+  model: "llama3.2"          # Ollama model name (run: ollama pull llama3.2)
+  temperature: 0.7           # Creativity: 0.0 = factual, 1.0 = creative
+  top_p: 0.9                 # Nucleus sampling threshold
+  num_ctx: 4096              # Context window size (tokens)
+
+# Embedding model settings
+embeddings:
+  model: "all-MiniLM-L6-v2"  # Sentence-transformers model (runs locally)
+  device: "cuda"              # Use GPU for embeddings
+
+# Document processing
+documents:
+  chunk_size: 1000           # Characters per chunk
+  chunk_overlap: 200         # Overlap between chunks (preserves context)
+  directory: "documents"     # Where to place your documents
+
+# Vector store
+vectorstore:
+  directory: "vectorstore"   # Where embeddings are persisted
+  collection: "documents"    # ChromaDB collection name
+
+# Retrieval settings
+retrieval:
+  top_k: 4                  # Number of relevant chunks to retrieve
+  score_threshold: 0.3      # Minimum similarity score (0-1)
+
+# UI settings
+ui:
+  title: "RAG Chatbot"
+  port: 7861
